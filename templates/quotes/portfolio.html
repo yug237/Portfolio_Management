@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}
+Manage Portfolio
+{% endblock %}
+
+{% block content %}
+    <br>
+    <h2>Portfolio Summary</h2>
+    <hr>
+    <form method="POST" action="{% url 'portfolio' %}" class="form-inline my-2 my-lg-0">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="add" placeholder="Stock Ticker or Name" aria-label="Add" name="ticker">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add Stock</button>
+    </form>
+    <br>
+    {% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+                <a class="close" data-dismiss="alert">×</a>
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endblock %}
+
+    {% if stkdata %}
+    <table class="table table-striped table-bordered table-hover table-sm">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Symbol</th>
+            <th scope="col">Price</th>
+            <th scope="col">Previous Open</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Previous Close</th>
+            <th scope="col">Delete Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for stock in stkdata %}
+            <tr>
+                <td>{{stock.symbol}}</td>
+                <td>${{stock.price |floatformat:-2 }}</td>
+                <td>${{stock.open}}</td>
+                <td>${{stock.high}}</td>
+                <td>${{stock.low}}</td>
+                <td>${{stock.close}}</td>
+                <td><a href="{% url 'delete_stock' stock.symbol %}" class="btn btn-outline-danger btn-sm">X</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    {% endif%}
+{% endblock %}
+

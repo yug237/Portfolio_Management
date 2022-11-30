@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Stock Portfolio
+{% endblock %}
+
+{% block content %}
+    <br>
+    {% if stocks and not stocks.Error %}
+        <ul>
+            <li>Symbol : {{stocks.symbol}}</li>
+            <li>Latest Price : {{stocks.price}}</li>
+            <li>Open : {{stocks.open}}</li>
+            <li>High : {{stocks.high}}</li>
+            <li>Low : {{stocks.low}}</li>
+            <li>Close : {{stocks.close}}</li>
+        </ul>
+    {% elif stocks.Error %}
+        <p>{{stocks.Error}}</p>
+    {% else %}
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Stock Portfolio</h1>
+            <p class="lead">Simple, yet powerful app which allows you to manage your stock portfolio !</p>
+            <hr class="my-4">
+            <p>It uses API integration for getting real time stock information on the fly.</p>
+            <p class="lead">
+            <a class="btn btn-success btn-lg" href="{% url 'portfolio' %}" role="button">Let's get started</a>
+            </p>
+        </div>
+    {% endif%}
+{% endblock %}
+
